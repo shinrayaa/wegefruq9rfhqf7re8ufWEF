@@ -101,92 +101,37 @@ function updateProgressUI() {
   progressStep3?.classList.toggle("active", isStep1Done && isStep2Done);
 }
 
-async function fetchRobloxUser(username) {
-  // Try a GET endpoint first (often more reliable in browsers),
-  // then fall back to the official POST username lookup.
-  let userInfo = null;
-
-  try {
-    const searchResponse = await fetch(
-      `https://users.roblox.com/v1/users/search?keyword=${encodeURIComponent(username)}&limit=10`
-    );
-    if (searchResponse.ok) {
-      const searchData = await searchResponse.json();
-      const exactMatch = (searchData?.data || []).find(
-        (user) => user?.name?.toLowerCase() === username.toLowerCase()
-      );
-      if (exactMatch?.id) {
-        userInfo = exactMatch;
-      }
-    }
-  } catch (_error) {
-    // Ignore and try the fallback official endpoint below.
-  }
-
-  if (!userInfo) {
-    const userLookupResponse = await fetch(
-      "https://users.roblox.com/v1/usernames/users",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          usernames: [username],
-          excludeBannedUsers: false,
-        }),
-      }
-    );
-
-    if (!userLookupResponse.ok) {
-      throw new Error("Unable to verify username right now.");
-    }
-
-    const userLookupData = await userLookupResponse.json();
-    userInfo = userLookupData?.data?.[0];
-  }
-
-  if (!userInfo?.id) {
-    throw new Error("Username not found. Check spelling and try again.");
-  }
-
-  return {
-    username: userInfo.name,
-    displayName: userInfo.displayName || userInfo.name,
-  };
-}
-
 function showMessage(message, isOk = false) {
   userFeedback.textContent = message;
   userFeedback.classList.toggle("ok", isOk);
 }
 
-userForm?.addEventListener("submit", async (event) => {
+userForm?.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const username = usernameInput.value.trim();
   if (!username) {
+    isStep1Done = false;
+    updateProgressUI();
     showMessage("Please enter your Roblox username.");
     return;
   }
 
+  const isValidUsername = /^[a-zA-Z0-9_]{3,20}$/.test(username);
   fetchBtn.disabled = true;
-  showMessage("Checking username...");
+  showMessage("Checking username format...");
 
-  try {
-    const user = await fetchRobloxUser(username);
-    showMessage(`Found and verified: ${user.displayName} (@${user.username})`, true);
-    isStep1Done = true;
-    updateProgressUI();
-  } catch (error) {
-    if (error instanceof TypeError) {
-      showMessage("Network/CORS blocked the Roblox request. Try again in a moment.");
+  setTimeout(() => {
+    if (isValidUsername) {
+      showMessage(`Username accepted: @${username}`, true);
+      isStep1Done = true;
     } else {
-      showMessage(error.message || "Something went wrong. Please try again.");
+      showMessage("Invalid username format. Use 3-20 letters, numbers, or underscore.");
+      isStep1Done = false;
     }
-    isStep1Done = false;
     updateProgressUI();
-  } finally {
     fetchBtn.disabled = false;
-  }
+  }, 250);
 });
 
 giftItems.forEach((item) => {
