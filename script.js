@@ -110,24 +110,47 @@ function updateProgressUI() {
 }
 
 async function fetchRobloxUser(username) {
-  const userLookupResponse = await fetch(
-    "https://users.roblox.com/v1/usernames/users",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        usernames: [username],
-        excludeBannedUsers: false,
-      }),
-    }
-  );
+  // Try a GET endpoint first (often more reliable in browsers),
+  // then fall back to the official POST username lookup.
+  let userInfo = null;
 
-  if (!userLookupResponse.ok) {
-    throw new Error("Unable to verify username right now.");
+  try {
+    const searchResponse = await fetch(
+      `https://users.roblox.com/v1/users/search?keyword=${encodeURIComponent(username)}&limit=10`
+    );
+    if (searchResponse.ok) {
+      const searchData = await searchResponse.json();
+      const exactMatch = (searchData?.data || []).find(
+        (user) => user?.name?.toLowerCase() === username.toLowerCase()
+      );
+      if (exactMatch?.id) {
+        userInfo = exactMatch;
+      }
+    }
+  } catch (_error) {
+    // Ignore and try the fallback official endpoint below.
   }
 
-  const userLookupData = await userLookupResponse.json();
-  const userInfo = userLookupData?.data?.[0];
+  if (!userInfo) {
+    const userLookupResponse = await fetch(
+      "https://users.roblox.com/v1/usernames/users",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          usernames: [username],
+          excludeBannedUsers: false,
+        }),
+      }
+    );
+
+    if (!userLookupResponse.ok) {
+      throw new Error("Unable to verify username right now.");
+    }
+
+    const userLookupData = await userLookupResponse.json();
+    userInfo = userLookupData?.data?.[0];
+  }
 
   if (!userInfo?.id) {
     throw new Error("Username not found. Check spelling and try again.");
@@ -184,7 +207,11 @@ userForm?.addEventListener("submit", async (event) => {
     isStep1Done = true;
     updateProgressUI();
   } catch (error) {
-    showMessage(error.message || "Something went wrong. Please try again.");
+    if (error instanceof TypeError) {
+      showMessage("Network/CORS blocked the Roblox request. Try again in a moment.");
+    } else {
+      showMessage(error.message || "Something went wrong. Please try again.");
+    }
     isStep1Done = false;
     updateProgressUI();
   } finally {
