@@ -15,6 +15,7 @@ const progressStep2 = document.getElementById("progressStep2");
 const progressStep3 = document.getElementById("progressStep3");
 const revealItems = document.querySelectorAll(".reveal");
 const staticAssetBases = ["./", "./pics/", "./pics/pics/"];
+const ASSET_VERSION = "v=3";
 
 let isStep1Done = false;
 let isStep2Done = false;
@@ -57,7 +58,7 @@ function imageExists(path) {
 
 async function resolveStaticAsset(fileName) {
   for (const base of staticAssetBases) {
-    const candidate = `${base}${fileName}`;
+    const candidate = `${base}${fileName}?${ASSET_VERSION}`;
     if (await imageExists(candidate)) {
       return candidate;
     }
