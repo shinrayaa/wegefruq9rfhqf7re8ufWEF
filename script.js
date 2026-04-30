@@ -4,9 +4,6 @@ const userForm = document.getElementById("userForm");
 const usernameInput = document.getElementById("usernameInput");
 const fetchBtn = document.getElementById("fetchBtn");
 const userFeedback = document.getElementById("userFeedback");
-const userResult = document.getElementById("userResult");
-const avatarImg = document.getElementById("avatarImg");
-const displayName = document.getElementById("displayName");
 const giftFeedback = document.getElementById("giftFeedback");
 const giftItems = document.querySelectorAll(".gift-item");
 const progressCount = document.getElementById("progressCount");
@@ -19,11 +16,6 @@ const ASSET_VERSION = "v=3";
 
 let isStep1Done = false;
 let isStep2Done = false;
-
-if (userResult) {
-  userResult.hidden = true;
-}
-avatarImg?.removeAttribute("src");
 
 startBtn?.addEventListener("click", () => {
   claimSection?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -156,25 +148,9 @@ async function fetchRobloxUser(username) {
     throw new Error("Username not found. Check spelling and try again.");
   }
 
-  const thumbResponse = await fetch(
-    `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userInfo.id}&size=150x150&format=Png&isCircular=false`
-  );
-
-  if (!thumbResponse.ok) {
-    throw new Error("Avatar fetch failed. Please retry.");
-  }
-
-  const thumbData = await thumbResponse.json();
-  const imageUrl = thumbData?.data?.[0]?.imageUrl;
-
-  if (!imageUrl) {
-    throw new Error("Could not load avatar image yet. Try again.");
-  }
-
   return {
     username: userInfo.name,
     displayName: userInfo.displayName || userInfo.name,
-    imageUrl,
   };
 }
 
@@ -188,22 +164,16 @@ userForm?.addEventListener("submit", async (event) => {
 
   const username = usernameInput.value.trim();
   if (!username) {
-    userResult.hidden = true;
     showMessage("Please enter your Roblox username.");
     return;
   }
 
   fetchBtn.disabled = true;
-  showMessage("Checking username and fetching avatar...");
-  userResult.hidden = true;
+  showMessage("Checking username...");
 
   try {
     const user = await fetchRobloxUser(username);
-    avatarImg.src = user.imageUrl;
-    avatarImg.alt = `${user.displayName} Roblox avatar`;
-    displayName.textContent = `${user.displayName} (@${user.username})`;
-    userResult.hidden = false;
-    showMessage("User found successfully.", true);
+    showMessage(`Found and verified: ${user.displayName} (@${user.username})`, true);
     isStep1Done = true;
     updateProgressUI();
   } catch (error) {
