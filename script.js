@@ -12,7 +12,7 @@ const progressStep2 = document.getElementById("progressStep2");
 const progressStep3 = document.getElementById("progressStep3");
 const revealItems = document.querySelectorAll(".reveal");
 const staticAssetBases = ["./", "./pics/", "./pics/pics/"];
-const ASSET_VERSION = "v=112";
+const ASSET_VERSION = "v=125";
 
 let isStep1Done = false;
 let isStep2Done = false;
