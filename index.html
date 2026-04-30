@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bloxaria | Get your dream BF Gifts</title>
+    <meta
+      name="description"
+      content="Bloxaria - Get Blox Fruits Perms with a simple guided flow."
+    />
+    <link rel="canonical" href="https://bloxaria.shop/" />
+    <script>
+      if (location.pathname.endsWith("/index.html")) {
+        location.replace(
+          location.pathname.replace(/\/index\.html$/, "/") +
+            location.search +
+            location.hash
+        );
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="site-bg" aria-hidden="true"></div>
+    <div class="noise" aria-hidden="true"></div>
+
+    <header class="hero" id="top">
+      <nav class="topbar">
+        <div class="brand">Bloxaria</div>
+        <a class="top-link" href="#claim">Claim Gift</a>
+      </nav>
+
+      <div class="hero-content">
+        <p class="eyebrow">Blox Fruits Gifts</p>
+        <h1>Bloxaria</h1>
+        <p class="description">Get Blox Fruits Gifts</p>
+        <button id="startBtn" class="cta-btn" type="button">
+          Get your dream Blox Fruits Gift
+        </button>
+      </div>
+    </header>
+
+    <main id="claim" class="flow">
+      <section class="card progress-card reveal" id="progressCard">
+        <div class="progress-top">
+          <p class="progress-title">Progress</p>
+          <p class="progress-count"><span id="progressCount">0</span>/3</p>
+        </div>
+        <div class="progress-steps" aria-hidden="true">
+          <div class="progress-step active" id="progressStep1">1</div>
+          <div class="progress-step" id="progressStep2">2</div>
+          <div class="progress-step" id="progressStep3">3</div>
+        </div>
+      </section>
+
+      <section class="card step-card reveal" id="stepOne">
+        <div class="step-label">Step 1</div>
+        <h2>Enter your Roblox username</h2>
+        <p>
+          Please enter your roblox username so we can send the gift to you.
+        </p>
+
+        <form id="userForm" class="input-row" autocomplete="off">
+          <input
+            id="usernameInput"
+            name="username"
+            type="text"
+            maxlength="20"
+            placeholder="e.g. Builderman"
+            required
+          />
+          <button id="fetchBtn" type="submit">Check</button>
+        </form>
+
+        <div id="userFeedback" class="feedback" aria-live="polite">
+          Enter your username to start.
+        </div>
+
+        <div id="userResult" class="result" hidden>
+          <img
+            id="avatarImg"
+            src=""
+            alt="Roblox avatar headshot"
+            width="120"
+            height="120"
+          />
+          <div class="result-meta">
+            <p id="displayName" class="result-name"></p>
+            <p class="verified">
+              <span class="checkmark" aria-hidden="true">✔</span>
+              Found and verified
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card step-card reveal" id="stepTwo">
+        <div class="step-label">Step 2</div>
+        <h2>Pick your gift!</h2>
+        <p>Select one or more gift images below.</p>
+
+        <div class="gift-grid" id="giftGrid">
+          <button class="gift-item" type="button" data-gift="buddha">
+            <img src="./Buddha.png" alt="Gift option 1" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="control">
+            <img src="./Control.png" alt="Gift option 2" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="dough">
+            <img src="./Dough.png" alt="Gift option 3" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="dragon">
+            <img src="./Dragon.png" alt="Gift option 4" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="gas">
+            <img src="./Gas.png" alt="Gift option 5" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="gravity">
+            <img src="./Gravity.webp" alt="Gift option 6" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="lightning">
+            <img src="./Lightning.png" alt="Gift option 7" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="mammoth">
+            <img src="./Mammoth.webp" alt="Gift option 8" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="portal">
+            <img src="./Portal.png" alt="Gift option 9" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="shadow">
+            <img src="./Shadow.webp" alt="Gift option 10" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="spirit">
+            <img src="./Spirit.png" alt="Gift option 11" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="tiger">
+            <img src="./Tiger.png" alt="Gift option 12" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="trex">
+            <img src="./trex.png" alt="Gift option 13" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="yeti">
+            <img src="./Yeti.png" alt="Gift option 14" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="dark-blade">
+            <img src="./Dark_Blade.webp" alt="Gift option 15" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="legendary-scroll">
+            <img src="./Legendary_Scroll.webp" alt="Gift option 16" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="mythical-scroll">
+            <img src="./Mythical_Scroll.webp" alt="Gift option 17" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="badge-boats">
+            <img src="./BadgeBoats.webp" alt="Gift option 18" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="badge-boss-drops">
+            <img src="./BadgeBossDrops.webp" alt="Gift option 19" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="badge-fruit-notifier">
+            <img src="./BadgeFruitNotifier.webp" alt="Gift option 20" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="badge-fruit-storage">
+            <img src="./BadgeFruitStorage.webp" alt="Gift option 21" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="badge-mastery-x2">
+            <img src="./BadgeMasteryx2.webp" alt="Gift option 22" loading="lazy" />
+          </button>
+          <button class="gift-item" type="button" data-gift="badge-money-x2">
+            <img src="./BadgeMoneyx2.webp" alt="Gift option 23" loading="lazy" />
+          </button>
+        </div>
+
+        <div id="giftFeedback" class="feedback" aria-live="polite">
+          Select at least one gift.
+        </div>
+      </section>
+
+      <section class="card step-card tutorial-bg reveal" id="stepThree">
+        <div class="step-label">Step 3</div>
+        <h2>Add the gifter</h2>
+        <p>
+          Open the profile and use the <strong>Add Connection</strong> button
+          exactly as shown.
+        </p>
+
+        <a class="add-btn" href="https://example.com" target="_blank" rel="noopener noreferrer">
+          Add Gifter
+        </a>
+      </section>
+    </main>
+
+    <script src="./script.js" defer></script>
+  </body>
+</html>
